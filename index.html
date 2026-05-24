@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Minhajul Islam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ─── RESET & TOKENS ─── */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #060a10;
+      --surface: #0d1320;
+      --glass: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.07);
+      --accent: #00e5a0;
+      --accent2: #00b8ff;
+      --text: #e8edf5;
+      --muted: #7a8599;
+      --ff-head: 'Syne', sans-serif;
+      --ff-body: 'DM Sans', sans-serif;
+      --radius: 14px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--ff-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+     #cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s;
+    }
+
+    /*#cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s, width 0.2s, height 0.2s, opacity 0.2s;
+      opacity: 0.5;
+    }
+
+    body:hover #cursor-ring {
+      opacity: 1;
+    } */
+
+    /* ─── NOISE GRAIN OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ─── AMBIENT BLOBS ─── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 229, 160, 0.08), transparent 70%);
+      top: -100px;
+      left: -150px;
+    }
+
+    .blob-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 184, 255, 0.07), transparent 70%);
+      bottom: -50px;
+      right: -120px;
+    }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.2rem 6%;
+      background: rgba(6, 10, 16, 0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: padding var(--transition);
+    }
+
+    .navbar.scrolled {
+      padding: 0.8rem 6%;
+    }
+
+    .logo {
+      font-family: var(--ff-head);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color var(--transition);
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    /* ─── BTN ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--ff-body);
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .btn:hover::before {
+      opacity: 0.12;
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 20px rgba(0, 229, 160, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-solid {
+      background: var(--accent);
+      color: #06100e;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .btn-solid:hover {
+      background: #00ffb3;
+      box-shadow: 0 0 30px rgba(0, 229, 160, 0.4);
+    }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      min-height: 100vh;
+      padding: 8rem 6% 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 1.5px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-family: var(--ff-head);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title span {
+      color: var(--accent);
+    }
+
+    /* ─── HERO ─── */
+    .hero-section {
+      display: flex;
+      align-items: center;
+      padding-top: 7rem;
+      min-height: 100vh;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+      width: 100%;
+    }
+
+    .hero-left {
+      flex: 1;
+    }
+
+    .hero-greeting {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .hero-name {
+      font-family: var(--ff-head);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, var(--text) 40%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-role {
+      font-family: var(--ff-head);
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-role .typing-text {
+      color: var(--accent);
+      -webkit-text-fill-color: var(--accent);
+    }
+
+    .hero-role .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 0.7s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hero-desc {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-item {}
+
+    .stat-num {
+      font-family: var(--ff-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Hero Image */
+    .hero-right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img-wrapper {
+      position: relative;
+      width: 340px;
+      height: 340px;
+    }
+
+    .hero-img-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent));
+      animation: spin 4s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hero-img-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      background: var(--bg);
+      border-radius: 50%;
+    }
+
+    .hero-img-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--border);
+    }
+
+    .hero-img-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .hero-img-wrapper:hover .hero-img-inner img {
+      transform: scale(1.06);
+    }
+
+    /* Image placeholder styling */
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--surface), #1a2540);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .img-placeholder i {
+      font-size: 2.5rem;
+      color: var(--accent);
+      opacity: 0.5;
+    }
+
+    .social-strip {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .social-strip a {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #e8edf5;
+      font-size: 1.05rem;
+      transition: all var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-strip a:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #06100e;
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(0, 229, 160, 0.35);
+    }
+
+    /* ─── ABOUT ─── */
+    .about-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+
+    .about-img-col {
+      position: relative;
+    }
+
+    .about-img-frame {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .about-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: var(--accent);
+      color: #06100e;
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      font-family: var(--ff-head);
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 229, 160, 0.3);
+    }
+
+    .about-badge .big {
+      font-size: 2.2rem;
+      display: block;
+      line-height: 1;
+    }
+
+    .about-badge .small {
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .about-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .about-bio {
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 0.95rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .info-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+
+    .info-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .about-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+
+    .skill-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skill-category-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .skill-category-card:hover {
+      border-color: rgba(0, 229, 160, 0.3);
+      transform: translateX(4px);
+    }
+
+    .skill-cat-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-cat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(0, 229, 160, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .skill-cat-title {
+      font-family: var(--ff-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all var(--transition);
+    }
+
+    .skill-tag:hover {
+      background: rgba(0, 229, 160, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .skill-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .skill-bar-item {}
+
+    .skill-bar-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-bar-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .skill-bar-pct {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .skill-bar-track {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      transition: width 1.4s cubic-bezier(0.1, 1, 0.1, 1);
+    }
+
+    /* ─── PROJECTS ─── */
+    .projects-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-strip {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .filter-btn {
+      padding: 0.45rem 1.1rem;
+      border-radius: 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #06100e;
+      font-weight: 700;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border-color: rgba(0, 229, 160, 0.25);
+    }
+
+    .project-thumb {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-thumb img {
+      transform: scale(1.08);
+    }
+
+    .project-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--surface), #1a2540);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .project-thumb-placeholder i {
+      font-size: 2rem;
+      color: var(--accent);
+      opacity: 0.4;
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(6, 10, 16, 0.85));
+    }
+
+    .project-links {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .project-card:hover .project-links {
+      opacity: 1;
+    }
+
+    .project-link-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(6, 10, 16, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all var(--transition);
+    }
+
+    .project-link-btn:hover {
+      background: var(--accent);
+      color: #060a10;
+      border-color: var(--accent);
+    }
+
+    .project-body {
+      padding: 1.4rem;
+    }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-category {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .project-year {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .project-title {
+      font-family: var(--ff-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .stack-tag {
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-tagline {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border-radius: var(--radius);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      transition: border-color var(--transition);
+    }
+
+    .contact-item:hover {
+      border-color: rgba(0, 229, 160, 0.3);
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(0, 229, 160, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-item-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-item-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    .contact-item-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .contact-social {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.08);
+      color: #e8edf5;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #06100e;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(0, 229, 160, 0.35);
+    }
+
+    .contact-form-wrapper {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    .form-input,
+    .form-textarea {
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 0.9rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      width: 100%;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 229, 160, 0.1);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 0.5rem;
+      justify-content: center;
+    }
+
+    .form-status {
+      text-align: center;
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      min-height: 1.2em;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 6%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.83rem;
+      z-index: 1;
+      position: relative;
+    }
+
+    .footer-logo {
+      font-family: var(--ff-head);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .footer-logo span {
+      color: var(--accent);
+    }
+
+    /* ─── FADE-IN ANIMATION ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── SCROLL PROGRESS ─── */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      z-index: 9999;
+      width: 0%;
+      transition: width 0.1s;
+    }
+
+    /* ─── BACK TO TOP ─── */
+    #back-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #06100e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 400;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition), transform var(--transition);
+      box-shadow: 0 8px 20px rgba(0, 229, 160, 0.3);
+    }
+
+    #back-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #back-top:hover {
+      transform: translateY(-3px);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:900px) {
+
+      .about-grid,
+      .skills-layout,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .about-badge {
+        bottom: 1rem;
+        right: 1rem;
+      }
+    }
+
+    @media (max-width:768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(6, 10, 16, 0.97);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+        display: none;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hero-container {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+
+      .hero-desc,
+      .social-strip {
+        margin: 0 auto;
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-stats {
+        justify-content: center;
+      }
+
+      .hero-img-wrapper {
+        width: 260px;
+        height: 260px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      body {
+        cursor: auto;
+      }
+
+      #cursor-dot,
+      #cursor-ring {
+        display: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Scroll progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="navbar" id="navbar">
+    <a href="#home" class="logo">PORTFOLIO<span>.</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="menu-toggle" id="menu-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="1em"
+        height="1em">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg></div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section id="home" class="hero-section">
+    <div class="hero-container">
+      <div class="hero-left">
+        <p class="hero-greeting fade-up">Welcome to my portfolio</p>
+        <!-- ✏️ EDIT: Replace "Your Name" below -->
+        <h1 class="hero-name fade-up">Minhajul Islam</h1>
+        <p class="hero-role fade-up">I'm a <span class="typing-text"></span><span class="cursor"></span></p>
+        <!-- ✏️ EDIT: Update your short bio -->
+        <p class="hero-desc fade-up">I’m a Computer Science and Engineering student at Jagannath University, Dhaka, passionate about building modern,responsive web applications. I enjoy turning ideas into clean, functional, and user-friendly digital experiences using
+        technologies like HTML, CSS, JavaScript, and React. I’m focused on improving my problem-solving skills, learning new
+        tools, and growing as a web developer with the goal of building impactful real-world projects.</p>
+        <div class="hero-actions fade-up">
+          <a href="#contact" class="btn btn-solid">Hire Me <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              width="1em" height="1em">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></a>
+          <!-- ✏️ EDIT: Update your CV link -->
+          <a href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9Db250ZW50cyA5IDAgUiAvTWVkaWFCb3ggWyAwIDAgNTk1LjI3NTYgODQxLjg4OTggXSAvUGFyZW50IDggMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA4IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKNyAwIG9iago8PAovQXV0aG9yIChhbm9ueW1vdXMpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA1MjQxNTExMDArMDAnMDAnKSAvQ3JlYXRvciAoYW5vbnltb3VzKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA1MjQxNTExMDArMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAodW5zcGVjaWZpZWQpIC9UaXRsZSAodW50aXRsZWQpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKOCAwIG9iago8PAovQ291bnQgMSAvS2lkcyBbIDUgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDc5MTYKPj4Kc3RyZWFtCkdiIWwkOTYyKDNQLnBOaGkmIS8hWldvYTE6ciZUJVZKMkdTKUcpKyMxWU4rQTkkSXVPRycsYT0rLU8lOjVDTzlMYlg9QjMvWkYvO1g7aUFrYVtAPmY5XS86NFxmLWctTEF0ZlpIU3VdIl0uPEY9JW9QcUVZMjBRPjxpcmxYK2pSOGRXYG4kIk1GdUlKKSUkPlBGbFNdZ2g0LSRqImZtPm9BUyFILFhUbj1wWTokYFYzYiswNzcmPSpoVVUkL2Y7R25DK1NaWXFpTkRRVzE+cG04Nk9UbU9XPHVWMDRbQy8hYzVFUXJwZGFfNTRYIi5pOzdhK0hULjlEKEduQHBcWGUkTWtsN1RZUVIvWjEnbVhrPzldLnE6RW83JSVqQFc+cEZ0PGchVStSW29QQTxMJUIrLydzSFk5a0BrOWlgT2soST9ITjssOEFoUjUtRVNcSTZpOFByNTtoPnEjO2xaUVI9VS9pLidJO1dwKWJrZSNdSmU1RTtLdSJANio+UigtUFBmaC1IbDJCWF9PLG1HTyVBZ2MvL1hfTV1DMStUbmhkKSNmSzVJQFBuPlJmWi5oVCEiSjUuNSZOa1EvaGhjZTY1SEtUTFRtWFJqazg9KUEtVyJnMFcnNWNqN15sTU9HOjxRMmBcKkdvNW1sJktKIktuWlpIQCE3XmVaPipQSF5wKDw0XEdiMzdOMXBQW1E8ZDAyRnMkb3ErO0gmQkpUInAva2VLLDhZbWo2OCwsVjVpRE9oUVNaXXRUWCY2RXJDa1Buays9NW8jJjFsN1J0SS8mVzBxRitaZmVUXFplRXRZPVswTEIoJDFCcFBEIydAODhRLiFIVElZZSI0biY0dDxMTEZCQyU0YFYkPSw9MytGKWViRD80VnQ9Jy1mK3QiMlZDVkQ/WypnWWMzOl87aTBAU1orREs7UVVuUi8yO001ND5IazliMkFsIyFTXDk+cHAkRCUmR2xhbzI9cS1dJjhUJlZQNSYnK15hbCVBXydSKj8rZDhwS21cbmBQaW83JnA4R2VsaXRdblZCK11XTmRYUilwOUdBUiNtQklZK1kkX243KGhzMTdgTT0wcSNkZkdJZVpUIWA/VikiQDNaWT9tZk0yMjldNVloY2l0blNkIjBpW3QnN0olXjhXRlNDY1BYUVRuOW5gb0pvZV0iU1U/XVJJaSchNiJVNDVccmheXDZRQG4rdCNKZTZgYVBnUzg3bD9zZFQ5KHBOMD49JFFdVmg6RW0lV011LEFvQjlmQWdodSRGZyUyPjw7VlVsSz4qTGpfKiNxNWI3UTU8Ol1zcj1fY2gkVFleLTM/bVA+dHEhZSUjMHFcL2xGZWIuJV5qKC9HU15VUikwNWI7UUt1SEBCUjlqb25FN1otLlcnXVFlR2wodEs4MmF1Zm04S2sxP2o/ODIwN2VcPkZIRGgxNmNkN1IkR0wmNT8tVls3TmdmbFRqLCo/QW46QTRLY042IidaLWg/UlRGXmZII1wjdC5VYi5PWVskLTxtJSo+aC1ZUSxYR0AhJUc4IjE3MiQ/VmFzZUdFWko7QnAzPVZTYTFaaTg3OWRiSHFHSFBMNE1GZl9PLGo8YWxDZ3NdL0w5LCUncWlSPjxndGw2czRyZFxvWy5DbUQkWitqOTdgUFZjWnEyXE8yQEVWcEc9PC9ZamhSVSUkdUAhYSVoZE1KPVVoZEAqNmUsXClaSi02a1YkU0xuU1tzT1gkTzshMS8yRTdDLVdBOCU0S0VLPjVBJCQ7MlBaYmU9Yj9CLC44RDtFUyEqIz43SiFhUUlCVGkhaFFiTWolN0VMKDZgOEstLVc/OmZ1LkcuJTljOTtxaU5wVTI9U0R1SC42SnIjP0YsLms/OHAvZUwlKzQ9OzRTPkc9PDEmLidWQVsiWj9oaTdnXE11WDlKaWBONl5bdFNcSCc9ZnIiVVdyVjo2Rl5vOXRyTmoiLWZpYkteXEUxWHM1VjlyMHJKVzFSYS9TKjhJNydNam5lXi5Kcj8oRVJGaU5uJzIkdFV1JC4mMlQvaiVQJiJtRTlhczEpZEhpIVVpUERecFVyWi8pYDxpR0BiPF1YX1FOWygwUV9FWFcxTi06aSxsOic6N2hFVTMyRElxWD1ecm4hQywzZWtrPVQiYyZrNmo1VG9ubDZaM3NJJmIxZTcyR0RuT18kTWMpY0s+OjhEckRISWE2TTQoOW9hRWZXKTJTWXIpUURQMi83MWJEKUNGL21HJ1NBZjhRNSllVGUqQzEidUUoOW9SSiQxKiwqJVU5U3NXMmNvcic8IStUYiE0XTpQIXAsLk1QTSEpOG85SU9TbyFEbCoqS1M8LD4wKlUmT1FAQFgkUSJYTmZjKFxtSTFAOV5dIVFrKElIcnQ3ZmRFTEEuYC9TPWJfIi9wKC1CPjhIUThuIyRWRjtgME5fIV81XzptUTMsUWBhYDhIWkFqYWQ4Ums3SzJaXSJzS05BQ2wlWzRnUzliJVIxOCJGKi4vIzstMnI9Pyc7IUFXIjhxLi07SmoiIlA8aU1MZTFzImEzcygwaThFMz1qRFQ7aVZzYUdySVVqZy9OcmlUNSZTPDIiVDg1WXA+J0A3I01IKiFfLXI5UyM4RkgpSj9oO0BBSSQ4YFJOM1xiZjEkM1ElT2RkNSNYVGwvQCJxQjZnbjctQl9qaVI6JjtDcDInVSoncyQuLE1zZnUuRy4kVCJDNG1gNFJyYFBCQmtsRGpQajQ8QFFNK1lBUyoncnEvLFBpR0BLJExGQCNpaic4JVslL0Y3JWZDPDZiRChiP1czLC5uKmNCKi5Naj9cUHAkMShjOTM9XGNrQFskOVt1Ky4yRzNJT1NsVmI8YGxrOlk8O2xyaFMhOkstQGJHTEl1IiRlaitPaidHPlAjYmUkZmRKSS07KCRiVFAlPlpmLCs1SzohdWlebURlLS82NSVNY29xM2tsWVQqOSlgPT0wZGtCQnI3PkFRcWk/WjdSQ3JMcmFtM11jWEdCbnU/Z2E8OzdZYkEwYkJBVEA9cVFBPG4rYGRBVGsoXkchUlpucDM4UFA/Li1hRDE6Si9MRyQ5Mjo+aDVnM2w8YFthKDg5MUFlTjw1UEA1ZisvQisnWmtCckAlUFkoRzIxMjM1WFs/YklSYjIlP1ssYV8uTV9iO2dnNjpCQlxsTVlySitkOit1YjlVbj9MTSJxYFY/bC8/OFgpcFkvbmdoRHMnM3IwN1prblpOL1VAODBGOUZjLGpOSEkoOFY7I2pkWkpvVCRpQmg7WUZZJ0pZPSUrcVVKOyxQImheRSw9PlVFYUE8WGArRDtYdG1gK0dyTSdKTCRoQiIoOW1TLXVmYXVodVQkcXJgXUFCc0RdRkhVOEhjSl8mOmozO0dgPkYmKz5aNlkyQFheXnFPYT1NJlk0ZElxV2RUVGQhJT89NEdvPi1gNmBfUmdgY0Upa1oxJ2s3RzBSJzo1TjIzLkFRRiVhUlJzRyYwZ0t0Qyk3Yl1AX1JYbmFNZW0oLCg1VyNTTSljVy4hTGFPZVM4WDg3ZDJRRnRyUXFYOChQLzNDMzVZOTIwOT8sJ1dRWWVIWT8rKjMhO2pQZlBRRTtzImNGMCtBYyppdWohYjAuX2s1QXM2Rm46Nk4rLGtyOC0tKyF1W21SSi1gUFBCaWsnaCpHKWRSKCcsPyhdbFtrJW5zX1Q9ITNWRGRSdTclM0lROzJSKGFTRlhJTWBzYV5eMG5dSTImbmNJb05TQnBFREtjbDRiXTo+JUQ7cWpXTClFZDNwRU9nNiRvNFMvSy5pcEFIL1JaVV4kSCZqRE4kJEFkJUAzXShTc0skUjZkZCUtLW1eQi4+JyVDJSYsLl9POjhhOzMwMCgrLFRlJSQiVWc3PyctNmNLUDw0dScuam4wSzVgOT43MGk9TyFCSy42bU5SMEJzJ1EoLyJJQ0VJIWVzZlpoR1BLNU81WmdpPio4dGBXVVM9SHQhUkcoOXM2ODUubzdvUTY8c1FMME9UI2h1ISpcL09qNzIiOkpfZVslMyFANTtGQjZUWmoocGo5TkBPc2E8QEZANWM5aTZwL29BIjtAPmQic15vOjxcImtgKz0wYWYpXDIzO3NgVFFrclRbX3EnLi4wJkAsLjRfVlFDbj4vVilkWVQ4YzRoaHVEbjU2PysiNTQtLys+aWdyK2twVzUoQDBXcG4vVl9fPDJjZT9QYEZSTEZfJm1nbS1ZImdEalFBUzEvUW1JczJfbnM1PkVFKEklQjVyakQsR146I0tbWzttJ2o+UCVpOkpeNjomXllHKzAjTVU1KipoNFlyaFZUPC06WzgoU2YkJEE3bSxJVlQ0InUmbmhTXE05NSQtYGJiZU1xdWdddVJSP1FQXmRCXG0rYmktWSo5VSw2XWZlJFI9bnM3MD4iZSZXMCFnUClYJjE9akVCI3UsSGhtRDpdY0o9LVhUJDgoU2lySmlTZFlScyw1UTFZIylGJydHcEk5YDpMZllFIWpgUW9xYm10VWhuRUgtJTJOUUYqT04mMmpqUyxsVCVMck50bCdLam9SS0AoTjc6cVhPZWdRQkskbHJWS19SVjMqZigxcGMrbTYhP1c9UGhxVWdRMGMiYTYvclU/WTBwa2hgbkpZcGJFWD8iai1ZYiFhZDE/SihSYkFnQywvNjonciQxaF03SHRULCY7LmhhSUsiUEU+XEBELm5ZV0V0TT9MSDJrSWtrRjpaV0cqVWlAX2hXbC5LJlFbUUBKSTJebkcrRi1RXk5OXmY7Y1dRXFZUM2MqMW5iTzNUX0UsUS8iOjhMUChlQms1RnJfXipkV1JfdDZaRjFHXT8yMFg/QXJHJSMuIk4tMkMpNkJnMkhdLmYzcUAsZys/ZCdFWituIlw3Xi4yODVWQ0stTUNQTyRKdDMwX0w3XCYwYGxPaUxGdClRLF9WL0I+JV8uKiRAXFFYY2hhR15oJExaTFVjQSpPc2M3Ty5FPDtbbDcmNmBhaT5uKCxkX01zIVgtZUtZR190JiRbNkUhNTlSYzoxSFJaJEJrLk0qMi8tVGhXOm9hSTUidE1iZW5MZVktPzpvS0ZnXCorblYkMEhBRWpiIXE3S1JFdUlcLDtRK21AUk5tSiRvLkc1dW1YdCQyQDMyI0BSKTRTPCNVLk9yNmcvOytvRlFwOSJRNTFuanRtaWJLWz1ebFkhRDNcR0ldNUYrLGghQW9DLSFSKEgtQWxuND5yVjVeZyVtTmFjLkczL2ZEPlxtOnR0MDUmT3JNZjNTX2gmXUI7OTskUVRZMHE+MGJrMzJYUl1cS09BVU8xSzVIQWRGLiYhMTVkRGhkTGU6cDt0bllIOCwkNjViNzdcQ2M8MGlJJF1NT1JHZEljYE5UXld0RCZgYlZmPm4sV3NgSjNLJ1AvU3MnS0tMX0g0Si9bLnA6RiRhbmlWQTZyNz5iUChQKy5PWmVCZ1pEV09GO1w/cjRyTTtYIk4taDE4QilDRztdXFNjKHNCK1dSKTAzKW5yZ1ZHX0lLRlU5cTRkN3JuQ00/K1BubnBzYjZARGEmajI6KVNcKVZXaz9VYDcyMCkyVV5MZFVII25MWycmVTNwbj9mMlQ1WSkuZXU9Wl0hLmxQVGZ1JW8ibGRuU21OVioyKiRdWT1dMDQqJFlCakosVzdXRzhoJl4jTTk+b2xuV08xR01KYCxDZzdOVjllbV4uZ1hPJWJUXUxXKXRQTlE2S2tHSC01JFEyZkptNExzbD1qK2Yic1d0XWlkRmZBbTFlW0RMcycrO1FLQzk6JldKYlFDZk0zWSc9X00yTUUsXERicEJQY00xI0MqLk1uSWAiRVI/YWMoX00wWDNHYXFuc2ZbKilYT2snZXBCMEhlQGFjV1JEX00wVlgjJVpwR0ZzZVBhIjpjMzw/bixHalVIOSRnQi1uKkhbKl9fcjJGP0U2TytUbElBMURfMVVGc0NaMkU/Wk4kJkthVEsxLi9UTUNFQS8iMlQ7JGlhPittKkNYXWYsYkZybz08cEVBZWVNVEslVHBhbGBVOER0TzIvVCsnMjFoMjJZO1EuNFk6WlhUb0cnVld0PnNoR0pMZFFZZSFzMlxtLysrYm9Da1FAI1pfUlUoXjRzallkR1MldGVIY0FnLCl1Py8pUl9JLS5lV2FjcEdcSXBJcTU1USNKP3BAKjlnJiNPWDptaiNvRzVfN2JrLzZDRm5WZzBgR2IxPmhNbGdzJCVMPUtfKWNeYWhqRkAvUExUNEowVlg9PEZJKEtGQjNTNkJNJk4lMWozVSJCWF1KRysyTyhnXUREaFRHM0o8YCkmRU1JZFE+QEp1JkJSL3I8N2xtL1gnMVEjOXQnMlZebVVQXlU9YTpgMCY3bFJEJ1UnVUgxOmlfK2QzYkcnSSY4M1ZbJCMiLWYtWCNpLDs4aDFWSj9tbEg8VS5Gaj5scCNRa1UoRkEnWXVzODhoUTNfQDJAKDw1XCRLXTVbdWw7YVhaSjQsJCl0bFBaPyE3ZS5rNyklVCNaNTtKL0IwbG5iPHEhaV1qRjVwJEBoZiNJbk1bXjIxIUAqVTBaZ10/XjZKRWdVN2xaKmA6RyZsKCEhQiUuYzhoUTJ0OSw3bTdeU1kzLmY/aSJvSTBkT2EzMzZGPmE1VEpNLDgiWFpeLFomRDZqaFtccmJjbXFsVWxvOydNNUJDZFstajZjZkozRFVTT1dvJCx1N0QpP2lYYzpAaTM8ayVISyJVQ1E+ZVduPjFDL09qdTo4Zj8uMjo0PGg4K2NhP1skbkBBX1dDVW5uUTtEJ1FdPyxCMkBLOyMmSHBFdCJZZ0ZIczIzOEUmKVZgQTArdTcoS1w7aWokM1tCdVpTI0F1WVooOV1dXWozPm02Ik42UU1DRUEvIi8sb1tAU2dQcnErNFA/MyEuaGhXJ2xGRWVUJU8qI0hIZyVaSk1gJEo9blk+OmRsMFlvUlRnQCtZZnEjU2JzYGc2UUFTYDVdcUVNMi4sZF8+WTFvU0RSciEwN1s/bD0mI2RvcylbMWhzVT1ASjxxJzk2JEY4anAxUiNYdD9RSkdGLz1gYiI5SUhbJ18nWnRMTUwlIWtAUVpaUzVNMCwoZyJlVXM4LlZwTGs2NyxaTls8NUFnNkZAN0UraCVlRixvJ1k6WWYtbEQmMVJjJGc/OXJpKSdUQj9hMXI8OFApOmYsYTpgPCpCMUpwXytwZkpKWWlHcWRGRzVfQjVkNWckKHRkMik3dT5QJzhZQTBNUTw5OEtsRz8ickpyVDBhLiE4JCpAMD9lI1MwL1BGZkohUF4lQCJmSEwsTShiTi5zaylrcVRFXE1aaFRHQCwyO3BgdVYjRUxhN3FwXmxmQSxVJ2hxOjVkNWcoKHRkMik3dT5cK00zMGwtaCZdWyhYRiI2VVc3NDosaCZdWkM5PGRJW1dPMUdNSktbNSM6M1VDJk9VPlpLWCNLUk0kP3BAaChZblVpNi5LLkAzO1AtYnFnXCxGR2Q3ZkFJTGg/YG86OUldUGpbPVVwU1skRTQ3VFdZb0RlI21xU2YyZGdrcV4+aitoJ04qXUtdTmonKVY4Xl5LSytENFtKQiFVY0g/LWg2b1EzMld0PldmdCE/LUdDOlJVLkpUUidlaCc9VCchYjguOVAyPTxEKz43cD9LOD5TPWEobXI7NkU2W3JsMV49X1pkRF5NKUEqVSU2YTA6JidBMEE2M1guUGlTSDQ1LlhyJmRnYVluQSllcDBcbU1ZXSx0KV9hQj9VLCxGcCQuK29Jbi8uInBrKSRpYXVGKF9lTkgzTGluVCdeVVo7b2lvOj0zKm40NjZpa3MndGRBPGg8MiJAP2dwV01zYF0mLyM/QFUrX01PUnFlKm8vVmQlTk9XMUVoYkQhblhJJUJARThfYmAwPFYjPUllMGgiQkZOcywscWFzXWtPbD0/RUdKWV9xLUxlc2g7KitaZmUxOmgzMzopMi5KZ1pnbCclS2EnJ2lvRkJqLGslPF5UKkJJVSclUUNbXTpzX2VjWGhqNTZyKCslNl8/cD5ZZzYlLFs5aUxbXWApKk4uayk4ImMqRjlXLWwzY0VsVkFaUHFfPHI8TDhNNTRuaiFRaFJfXzRwQGsmcXJKMFg/Q3UrUWErXTlyMkZCXjQ1J04vL1IiajEhLycyQmBiKVMxIzokV21IUlQoI01zM29pJEpJYk90ZStnbW9fUkZSYD0nMEYxNU9RcG9jVG0rZ0l0cFxhQFpcQCovbl5HRmwvT1JpTFw5dDZSRDNpQT1YP14iPCI3VWViW25gWWVaYU4hUTFJQUNoZ2krUGlgPzBAYyFMOT9vLEk1YFEmQUZKSUlOQyI1SjRIKEw8XUs9aihvJWQ+QXJEUWVhZHFTQ3E8Y1BKLzc5X0UxdTFdXnUpM1tDcE88P2hoWUA7P0dnLVNALztTUTAwY1F0NldTVGRZRDRbLmAzWW0zUy4/OC1uPW5AJVkzSHUvPUkxdElJUW1MPEI5O1ttMU89cThiQkdiZERULUdHXjA7RT5rVVloY0wvS1ItNFdFZi0qLGZgbixUQy02P2heVHNpWEYqPWo4M2lZPW5fI0NzKi9oX28zW007ZmpxVk88MGZfYEE/NGEkb0AqK3UxSktCdUFScCxHMyVeaWVYNiclLT5Zazdwb3M7RGtcKDA2QmlgY0g6Vyc/V0dGUFRxLGZURlZzYilTX2NYX1suR1lMZF0hcTxkdEorSTdWKldgJFBZUFwldVhOTVA5J19IKEAhVl07Vk06QGhsdCthbE5IKWRyW0ArXiZUUD1JbFMmPClodDtjOWYranBWLCkjX08mTlAtaXAyQFw4XG9vQEB0YCgzLjdLRl0mKihjP2NEaldHJGkhQEBGJ3AlIjBDKmlURVInMENKUCxMIU9JNl8mYkNKIWhbSGImbjVsXUtJXzMuTTIjbjMvKkB0bU0kOXFmcWlodUhncjtcZEwyYmRSPGE/SVIvZ2Irci5ZNUsrRDIyYmgwMWdWJFpjMiRIOUNyUERlbE8wQVdjI0J1ckt1dSxRVVwzNyJqbEJbXihvb2h1aD1wbUVwPiojLTUkQGRCLkY7MjMkKUwmOmMmWFVMW2guZGQkUWNuUGxQUXQlIUo0QUpScEJHVXBiOGtbckE9TEwvSDtrL2ldJjVOblswN3RLOiRvcEA3bjBTLWJqX1hKbls2SWojaGkhLjI1RWs1Mjw2WkNHR0xTUUo5WHQ7a2MjRyRoSShEPkxxUComciYvWDQpTiFMLjFJamVUQy5IL21NNV42Y28xKElxI2dsckkoP2kjKlM1QSJiaTU4VDYkOiMtOFhDRzslb14uPmpnUS1FSE1HUDtcJChqVWpMVjArKW4sSVprbyo8Ul5oP1BiTiZNLUwlUWg3SDVQLmJTcGVcL0ttQ0omYz9lZUhwQW1zImwvbW9eclsnLGVCIz40SzcwanJTKTg/P2hoaDowLldoRXVqPC9SVyJqSERvcTxiNl81ST5zQWM7PVMkYWtHUSdbWW44anRMbkpadSkwIT8jNlVZOktsbTk6dSNfUzJqczg4V2dcbE1VJjhvL0BLSzBALnE7R15cYCNQOEA6OmtEKm5hYjI3UXFGbiNnaWVtRSc3VWxBJ0lpNFM3S2VNJ1wxWTclTUFTKXJwWi4mZ3BeYTZNb2E5UDxKJS5dYzxrTCNOSTVOKkFNWmNiQXE5XzhWaFBGKDRmdFtVN3JsKTdHY0s+JGFdWz5OYFI2VyFRNFgwXD5fODkhS01QS3RsMzpiRDF1MG0jNiZGR0cwW0dqMGVWa3BeTis3RUlEKTBQL2NBaFgjYU0laVxJW3BaWz5VSj8nOEEiJFtIVDxmPV5yTU0wTEwzaiFTZmVUMi1vLXBRNjBMJztwJy8pcV1wcG87PEM0bD5bO1srJSFmKk0hOTRHZ1xQTztkXkZBTzpmYVleUm5rOkRvR3NVYUkiSlhLbjs3MG9dPy1aT1Q6TmEtXShrNS4qbl8oISZjV2tubDIqUEJXSywtW3FdRFkkZUdYNUdYYWZxS2JbXStQSnIvZWRldV1PbTkwWkxjVjhobD9oZy9xK0RSa0AtaCRtS3NiNVJgXTFlZkBYL1VqcztfYkUnYDQtLEAuaEQ9TkVdb0xFNl5bZjJbKjFhdCRaMlNzPyJLU2Q9YE9bP1puLW4mXlF0dS9BOGM/JXBCRHFiTW4rVlU5X04oRC5EYHJuQnA+Pk0vU01Mc2tVUVUzPiJaQkpJUj1hRHIlRz9iTWYmIS4vTVNdZSIlJ2tqJSgxcEdFaGwmZDZxbCFyUz8rPGtpbTIhRC04MFkuZlNZbSotKSNENlpgIyd0U2ZKSFRGclU1ZTZvU2xFTDUhN0oqVGs9XmVwR1pWRUw+SDlDRHVESjpsRGhAMmBPLDZwVzhOKkFyblF0O0wqIj9NbklnVy86ZFU1TCZeJVRUZUdlSW9vcEwnNSpkZEVoXDs/OEFKYGBrTTR0Y2MuJmc3NUpUKUojTGh0ZmRWXzk7W2o1bGc8NF5cUz5nWWJTbCoyOVgmL2lwYFQhcGVQI01vW2Arb2clWUdfKSVmSlhuXEQ9OThPJVhlR0FzPyI1UEY7OVNHWEpRPlA5P34+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgMTAKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDYxIDAwMDAwIG4gCjAwMDAwMDAxMTIgMDAwMDAgbiAKMDAwMDAwMDIxOSAwMDAwMCBuIAowMDAwMDAwMzMxIDAwMDAwIG4gCjAwMDAwMDA0NDYgMDAwMDAgbiAKMDAwMDAwMDY0OSAwMDAwMCBuIAowMDAwMDAwNzE3IDAwMDAwIG4gCjAwMDAwMDA5NzggMDAwMDAgbiAKMDAwMDAwMTAzNyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzwxMzRiMWRhOTI3ZDhiYWNiOTRlNmFiMjg2MTMwYjMyYz48MTM0YjFkYTkyN2Q4YmFjYjk0ZTZhYjI4NjEzMGIzMmM+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDcgMCBSCi9Sb290IDYgMCBSCi9TaXplIDEwCj4+CnN0YXJ0eHJlZgo5MDQ0CiUlRU9GCg=="
+            download="YourName_Resume.pdf" class="btn" download>Download CV <svg xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round" width="1em" height="1em">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg></a>
+        </div>
+        <div class="social-strip fade-up">
+          <!-- ✏️ EDIT: Replace # with your actual profile URLs -->
+          <a href="https://github.com/Minhajul43" target="_blank" title="GitHub"><svg xmlns="https://github.com/Minhajul43" viewBox="0 0 24 24"
+              fill="currentColor" width="1em" height="1em">
+              <path
+                d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17A10.95 10.95 0 0 1 12 6.84c.97.004 1.95.13 2.86.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.7 5.38-5.26 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
+            </svg></a>
+          <a href="https://www.linkedin.com/in/minhajulislam43/" target="_blank" title="LinkedIn"><svg xmlns="https://www.linkedin.com/in/minhajulislam43/" viewBox="0 0 24 24"
+              fill="currentColor" width="1em" height="1em">
+              <path
+                d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+            </svg></a>
+          <a href="https://www.facebook.com/Minhajul.43" target="_blank" title="Facebook"><svg xmlns="https://www.facebook.com/Minhajul.43" viewBox="0 0 24 24"
+              fill="currentColor" width="1em" height="1em">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg></a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=minhajul255685islam@gmail.com" target="_blank" title="Email"><svg xmlns="mailto:minhajul255685islam@gmail.com" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              width="1em" height="1em">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <polyline points="2,4 12,13 22,4" />
+            </svg></a>
+        </div>
+        <div class="hero-stats fade-up">
+          <!-- ✏️ EDIT: Update stats -->
+          <div class="stat-item">
+            <div class="stat-num">2+</div>
+            <div class="stat-label">Years Learning</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">10+</div>
+            <div class="stat-label">Projects Done</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Technologies</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right fade-up">
+        <div class="hero-img-wrapper">
+          <div class="hero-img-inner">
+            <!--
+            ✏️ HOW TO ADD YOUR PROFILE IMAGE:
+            Option A (Recommended): Replace the placeholder div below with:
+              <img src="YOUR_IMAGE_PATH.jpg" alt="Your Name" />
+            Option B: Use an online URL:
+              <img src="https://your-image-url.com/photo.jpg" alt="Your Name" />
+          -->
+            <div class="img-placeholder">
+              <img src="image/profile.png"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              <span></span>
+              <span style="font-size:0.72rem;opacity:0.6"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section id="about" class="about-section">
+    <div class="fade-up">
+      <span class="section-label">Get to know me</span>
+      <h2 class="section-title">About <span>Me</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-img-col fade-up">
+        <div class="about-img-frame">
+          <!--
+          ✏️ HOW TO ADD YOUR ABOUT IMAGE:
+          Replace this placeholder with:
+            <img src="YOUR_ABOUT_IMAGE.jpg" alt="About Me" />
+        -->
+          <div class="img-placeholder" style="height:100%;min-height:360px;">
+            <img src="image/about.jpg"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+            <span></span>
+            <span style="font-size:0.72rem;opacity:0.6"></span>
+          </div>
+        </div>
+        <!-- ✏️ EDIT: Update years of experience -->
+        <div class="about-badge">
+          <span class="big">2+</span>
+          <span class="small">Years of<br>Experience</span>
+        </div>
+      </div>
+      <div class="about-text-col fade-up">
+        <div>
+          <span class="section-label">My story</span>
+          <!-- ✏️ EDIT: Update your bio paragraph -->
+          <p class="about-bio">I'm a passionate Computer Science & Engineering student at Jagannath University with a
+            strong drive for web development and problem solving. I enjoy building real-world projects that combine
+            elegant design with clean code.<br><br>
+            From learning C and C++ fundamentals to diving deep into HTML, CSS, JavaScript, and React — I'm on a journey
+            of continuous growth. I also love teaching and sharing knowledge with others.</p>
+        </div>
+        <div class="info-grid">
+          <!-- ✏️ EDIT: Replace all personal details below -->
+          <div class="info-item">
+            <div class="info-label">Name</div>
+            <div class="info-value">Minhajul Islam</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">University</div>
+            <div class="info-value">Jagannath University</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Degree</div>
+            <div class="info-value">B.Sc. in CSE</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Location</div>
+            <div class="info-value">Dhaka, Bangladesh</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value">minhajul255685islam@gmail.com</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Available</div>
+            <div class="info-value">After 7:00 PM </div>
+          </div>
+        </div>
+        <div class="about-actions">
+          <!-- ✏️ EDIT: Update your CV link -->
+          <a href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9Db250ZW50cyA5IDAgUiAvTWVkaWFCb3ggWyAwIDAgNTk1LjI3NTYgODQxLjg4OTggXSAvUGFyZW50IDggMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA4IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKNyAwIG9iago8PAovQXV0aG9yIChhbm9ueW1vdXMpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA1MjQxNTExMDArMDAnMDAnKSAvQ3JlYXRvciAoYW5vbnltb3VzKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA1MjQxNTExMDArMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAodW5zcGVjaWZpZWQpIC9UaXRsZSAodW50aXRsZWQpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKOCAwIG9iago8PAovQ291bnQgMSAvS2lkcyBbIDUgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDc5MTYKPj4Kc3RyZWFtCkdiIWwkOTYyKDNQLnBOaGkmIS8hWldvYTE6ciZUJVZKMkdTKUcpKyMxWU4rQTkkSXVPRycsYT0rLU8lOjVDTzlMYlg9QjMvWkYvO1g7aUFrYVtAPmY5XS86NFxmLWctTEF0ZlpIU3VdIl0uPEY9JW9QcUVZMjBRPjxpcmxYK2pSOGRXYG4kIk1GdUlKKSUkPlBGbFNdZ2g0LSRqImZtPm9BUyFILFhUbj1wWTokYFYzYiswNzcmPSpoVVUkL2Y7R25DK1NaWXFpTkRRVzE+cG04Nk9UbU9XPHVWMDRbQy8hYzVFUXJwZGFfNTRYIi5pOzdhK0hULjlEKEduQHBcWGUkTWtsN1RZUVIvWjEnbVhrPzldLnE6RW83JSVqQFc+cEZ0PGchVStSW29QQTxMJUIrLydzSFk5a0BrOWlgT2soST9ITjssOEFoUjUtRVNcSTZpOFByNTtoPnEjO2xaUVI9VS9pLidJO1dwKWJrZSNdSmU1RTtLdSJANio+UigtUFBmaC1IbDJCWF9PLG1HTyVBZ2MvL1hfTV1DMStUbmhkKSNmSzVJQFBuPlJmWi5oVCEiSjUuNSZOa1EvaGhjZTY1SEtUTFRtWFJqazg9KUEtVyJnMFcnNWNqN15sTU9HOjxRMmBcKkdvNW1sJktKIktuWlpIQCE3XmVaPipQSF5wKDw0XEdiMzdOMXBQW1E8ZDAyRnMkb3ErO0gmQkpUInAva2VLLDhZbWo2OCwsVjVpRE9oUVNaXXRUWCY2RXJDa1Buays9NW8jJjFsN1J0SS8mVzBxRitaZmVUXFplRXRZPVswTEIoJDFCcFBEIydAODhRLiFIVElZZSI0biY0dDxMTEZCQyU0YFYkPSw9MytGKWViRD80VnQ9Jy1mK3QiMlZDVkQ/WypnWWMzOl87aTBAU1orREs7UVVuUi8yO001ND5IazliMkFsIyFTXDk+cHAkRCUmR2xhbzI9cS1dJjhUJlZQNSYnK15hbCVBXydSKj8rZDhwS21cbmBQaW83JnA4R2VsaXRdblZCK11XTmRYUilwOUdBUiNtQklZK1kkX243KGhzMTdgTT0wcSNkZkdJZVpUIWA/VikiQDNaWT9tZk0yMjldNVloY2l0blNkIjBpW3QnN0olXjhXRlNDY1BYUVRuOW5gb0pvZV0iU1U/XVJJaSchNiJVNDVccmheXDZRQG4rdCNKZTZgYVBnUzg3bD9zZFQ5KHBOMD49JFFdVmg6RW0lV011LEFvQjlmQWdodSRGZyUyPjw7VlVsSz4qTGpfKiNxNWI3UTU8Ol1zcj1fY2gkVFleLTM/bVA+dHEhZSUjMHFcL2xGZWIuJV5qKC9HU15VUikwNWI7UUt1SEBCUjlqb25FN1otLlcnXVFlR2wodEs4MmF1Zm04S2sxP2o/ODIwN2VcPkZIRGgxNmNkN1IkR0wmNT8tVls3TmdmbFRqLCo/QW46QTRLY042IidaLWg/UlRGXmZII1wjdC5VYi5PWVskLTxtJSo+aC1ZUSxYR0AhJUc4IjE3MiQ/VmFzZUdFWko7QnAzPVZTYTFaaTg3OWRiSHFHSFBMNE1GZl9PLGo8YWxDZ3NdL0w5LCUncWlSPjxndGw2czRyZFxvWy5DbUQkWitqOTdgUFZjWnEyXE8yQEVWcEc9PC9ZamhSVSUkdUAhYSVoZE1KPVVoZEAqNmUsXClaSi02a1YkU0xuU1tzT1gkTzshMS8yRTdDLVdBOCU0S0VLPjVBJCQ7MlBaYmU9Yj9CLC44RDtFUyEqIz43SiFhUUlCVGkhaFFiTWolN0VMKDZgOEstLVc/OmZ1LkcuJTljOTtxaU5wVTI9U0R1SC42SnIjP0YsLms/OHAvZUwlKzQ9OzRTPkc9PDEmLidWQVsiWj9oaTdnXE11WDlKaWBONl5bdFNcSCc9ZnIiVVdyVjo2Rl5vOXRyTmoiLWZpYkteXEUxWHM1VjlyMHJKVzFSYS9TKjhJNydNam5lXi5Kcj8oRVJGaU5uJzIkdFV1JC4mMlQvaiVQJiJtRTlhczEpZEhpIVVpUERecFVyWi8pYDxpR0BiPF1YX1FOWygwUV9FWFcxTi06aSxsOic6N2hFVTMyRElxWD1ecm4hQywzZWtrPVQiYyZrNmo1VG9ubDZaM3NJJmIxZTcyR0RuT18kTWMpY0s+OjhEckRISWE2TTQoOW9hRWZXKTJTWXIpUURQMi83MWJEKUNGL21HJ1NBZjhRNSllVGUqQzEidUUoOW9SSiQxKiwqJVU5U3NXMmNvcic8IStUYiE0XTpQIXAsLk1QTSEpOG85SU9TbyFEbCoqS1M8LD4wKlUmT1FAQFgkUSJYTmZjKFxtSTFAOV5dIVFrKElIcnQ3ZmRFTEEuYC9TPWJfIi9wKC1CPjhIUThuIyRWRjtgME5fIV81XzptUTMsUWBhYDhIWkFqYWQ4Ums3SzJaXSJzS05BQ2wlWzRnUzliJVIxOCJGKi4vIzstMnI9Pyc7IUFXIjhxLi07SmoiIlA8aU1MZTFzImEzcygwaThFMz1qRFQ7aVZzYUdySVVqZy9OcmlUNSZTPDIiVDg1WXA+J0A3I01IKiFfLXI5UyM4RkgpSj9oO0BBSSQ4YFJOM1xiZjEkM1ElT2RkNSNYVGwvQCJxQjZnbjctQl9qaVI6JjtDcDInVSoncyQuLE1zZnUuRy4kVCJDNG1gNFJyYFBCQmtsRGpQajQ8QFFNK1lBUyoncnEvLFBpR0BLJExGQCNpaic4JVslL0Y3JWZDPDZiRChiP1czLC5uKmNCKi5Naj9cUHAkMShjOTM9XGNrQFskOVt1Ky4yRzNJT1NsVmI8YGxrOlk8O2xyaFMhOkstQGJHTEl1IiRlaitPaidHPlAjYmUkZmRKSS07KCRiVFAlPlpmLCs1SzohdWlebURlLS82NSVNY29xM2tsWVQqOSlgPT0wZGtCQnI3PkFRcWk/WjdSQ3JMcmFtM11jWEdCbnU/Z2E8OzdZYkEwYkJBVEA9cVFBPG4rYGRBVGsoXkchUlpucDM4UFA/Li1hRDE6Si9MRyQ5Mjo+aDVnM2w8YFthKDg5MUFlTjw1UEA1ZisvQisnWmtCckAlUFkoRzIxMjM1WFs/YklSYjIlP1ssYV8uTV9iO2dnNjpCQlxsTVlySitkOit1YjlVbj9MTSJxYFY/bC8/OFgpcFkvbmdoRHMnM3IwN1prblpOL1VAODBGOUZjLGpOSEkoOFY7I2pkWkpvVCRpQmg7WUZZJ0pZPSUrcVVKOyxQImheRSw9PlVFYUE8WGArRDtYdG1gK0dyTSdKTCRoQiIoOW1TLXVmYXVodVQkcXJgXUFCc0RdRkhVOEhjSl8mOmozO0dgPkYmKz5aNlkyQFheXnFPYT1NJlk0ZElxV2RUVGQhJT89NEdvPi1gNmBfUmdgY0Upa1oxJ2s3RzBSJzo1TjIzLkFRRiVhUlJzRyYwZ0t0Qyk3Yl1AX1JYbmFNZW0oLCg1VyNTTSljVy4hTGFPZVM4WDg3ZDJRRnRyUXFYOChQLzNDMzVZOTIwOT8sJ1dRWWVIWT8rKjMhO2pQZlBRRTtzImNGMCtBYyppdWohYjAuX2s1QXM2Rm46Nk4rLGtyOC0tKyF1W21SSi1gUFBCaWsnaCpHKWRSKCcsPyhdbFtrJW5zX1Q9ITNWRGRSdTclM0lROzJSKGFTRlhJTWBzYV5eMG5dSTImbmNJb05TQnBFREtjbDRiXTo+JUQ7cWpXTClFZDNwRU9nNiRvNFMvSy5pcEFIL1JaVV4kSCZqRE4kJEFkJUAzXShTc0skUjZkZCUtLW1eQi4+JyVDJSYsLl9POjhhOzMwMCgrLFRlJSQiVWc3PyctNmNLUDw0dScuam4wSzVgOT43MGk9TyFCSy42bU5SMEJzJ1EoLyJJQ0VJIWVzZlpoR1BLNU81WmdpPio4dGBXVVM9SHQhUkcoOXM2ODUubzdvUTY8c1FMME9UI2h1ISpcL09qNzIiOkpfZVslMyFANTtGQjZUWmoocGo5TkBPc2E8QEZANWM5aTZwL29BIjtAPmQic15vOjxcImtgKz0wYWYpXDIzO3NgVFFrclRbX3EnLi4wJkAsLjRfVlFDbj4vVilkWVQ4YzRoaHVEbjU2PysiNTQtLys+aWdyK2twVzUoQDBXcG4vVl9fPDJjZT9QYEZSTEZfJm1nbS1ZImdEalFBUzEvUW1JczJfbnM1PkVFKEklQjVyakQsR146I0tbWzttJ2o+UCVpOkpeNjomXllHKzAjTVU1KipoNFlyaFZUPC06WzgoU2YkJEE3bSxJVlQ0InUmbmhTXE05NSQtYGJiZU1xdWdddVJSP1FQXmRCXG0rYmktWSo5VSw2XWZlJFI9bnM3MD4iZSZXMCFnUClYJjE9akVCI3UsSGhtRDpdY0o9LVhUJDgoU2lySmlTZFlScyw1UTFZIylGJydHcEk5YDpMZllFIWpgUW9xYm10VWhuRUgtJTJOUUYqT04mMmpqUyxsVCVMck50bCdLam9SS0AoTjc6cVhPZWdRQkskbHJWS19SVjMqZigxcGMrbTYhP1c9UGhxVWdRMGMiYTYvclU/WTBwa2hgbkpZcGJFWD8iai1ZYiFhZDE/SihSYkFnQywvNjonciQxaF03SHRULCY7LmhhSUsiUEU+XEBELm5ZV0V0TT9MSDJrSWtrRjpaV0cqVWlAX2hXbC5LJlFbUUBKSTJebkcrRi1RXk5OXmY7Y1dRXFZUM2MqMW5iTzNUX0UsUS8iOjhMUChlQms1RnJfXipkV1JfdDZaRjFHXT8yMFg/QXJHJSMuIk4tMkMpNkJnMkhdLmYzcUAsZys/ZCdFWituIlw3Xi4yODVWQ0stTUNQTyRKdDMwX0w3XCYwYGxPaUxGdClRLF9WL0I+JV8uKiRAXFFYY2hhR15oJExaTFVjQSpPc2M3Ty5FPDtbbDcmNmBhaT5uKCxkX01zIVgtZUtZR190JiRbNkUhNTlSYzoxSFJaJEJrLk0qMi8tVGhXOm9hSTUidE1iZW5MZVktPzpvS0ZnXCorblYkMEhBRWpiIXE3S1JFdUlcLDtRK21AUk5tSiRvLkc1dW1YdCQyQDMyI0BSKTRTPCNVLk9yNmcvOytvRlFwOSJRNTFuanRtaWJLWz1ebFkhRDNcR0ldNUYrLGghQW9DLSFSKEgtQWxuND5yVjVeZyVtTmFjLkczL2ZEPlxtOnR0MDUmT3JNZjNTX2gmXUI7OTskUVRZMHE+MGJrMzJYUl1cS09BVU8xSzVIQWRGLiYhMTVkRGhkTGU6cDt0bllIOCwkNjViNzdcQ2M8MGlJJF1NT1JHZEljYE5UXld0RCZgYlZmPm4sV3NgSjNLJ1AvU3MnS0tMX0g0Si9bLnA6RiRhbmlWQTZyNz5iUChQKy5PWmVCZ1pEV09GO1w/cjRyTTtYIk4taDE4QilDRztdXFNjKHNCK1dSKTAzKW5yZ1ZHX0lLRlU5cTRkN3JuQ00/K1BubnBzYjZARGEmajI6KVNcKVZXaz9VYDcyMCkyVV5MZFVII25MWycmVTNwbj9mMlQ1WSkuZXU9Wl0hLmxQVGZ1JW8ibGRuU21OVioyKiRdWT1dMDQqJFlCakosVzdXRzhoJl4jTTk+b2xuV08xR01KYCxDZzdOVjllbV4uZ1hPJWJUXUxXKXRQTlE2S2tHSC01JFEyZkptNExzbD1qK2Yic1d0XWlkRmZBbTFlW0RMcycrO1FLQzk6JldKYlFDZk0zWSc9X00yTUUsXERicEJQY00xI0MqLk1uSWAiRVI/YWMoX00wWDNHYXFuc2ZbKilYT2snZXBCMEhlQGFjV1JEX00wVlgjJVpwR0ZzZVBhIjpjMzw/bixHalVIOSRnQi1uKkhbKl9fcjJGP0U2TytUbElBMURfMVVGc0NaMkU/Wk4kJkthVEsxLi9UTUNFQS8iMlQ7JGlhPittKkNYXWYsYkZybz08cEVBZWVNVEslVHBhbGBVOER0TzIvVCsnMjFoMjJZO1EuNFk6WlhUb0cnVld0PnNoR0pMZFFZZSFzMlxtLysrYm9Da1FAI1pfUlUoXjRzallkR1MldGVIY0FnLCl1Py8pUl9JLS5lV2FjcEdcSXBJcTU1USNKP3BAKjlnJiNPWDptaiNvRzVfN2JrLzZDRm5WZzBgR2IxPmhNbGdzJCVMPUtfKWNeYWhqRkAvUExUNEowVlg9PEZJKEtGQjNTNkJNJk4lMWozVSJCWF1KRysyTyhnXUREaFRHM0o8YCkmRU1JZFE+QEp1JkJSL3I8N2xtL1gnMVEjOXQnMlZebVVQXlU9YTpgMCY3bFJEJ1UnVUgxOmlfK2QzYkcnSSY4M1ZbJCMiLWYtWCNpLDs4aDFWSj9tbEg8VS5Gaj5scCNRa1UoRkEnWXVzODhoUTNfQDJAKDw1XCRLXTVbdWw7YVhaSjQsJCl0bFBaPyE3ZS5rNyklVCNaNTtKL0IwbG5iPHEhaV1qRjVwJEBoZiNJbk1bXjIxIUAqVTBaZ10/XjZKRWdVN2xaKmA6RyZsKCEhQiUuYzhoUTJ0OSw3bTdeU1kzLmY/aSJvSTBkT2EzMzZGPmE1VEpNLDgiWFpeLFomRDZqaFtccmJjbXFsVWxvOydNNUJDZFstajZjZkozRFVTT1dvJCx1N0QpP2lYYzpAaTM8ayVISyJVQ1E+ZVduPjFDL09qdTo4Zj8uMjo0PGg4K2NhP1skbkBBX1dDVW5uUTtEJ1FdPyxCMkBLOyMmSHBFdCJZZ0ZIczIzOEUmKVZgQTArdTcoS1w7aWokM1tCdVpTI0F1WVooOV1dXWozPm02Ik42UU1DRUEvIi8sb1tAU2dQcnErNFA/MyEuaGhXJ2xGRWVUJU8qI0hIZyVaSk1gJEo9blk+OmRsMFlvUlRnQCtZZnEjU2JzYGc2UUFTYDVdcUVNMi4sZF8+WTFvU0RSciEwN1s/bD0mI2RvcylbMWhzVT1ASjxxJzk2JEY4anAxUiNYdD9RSkdGLz1gYiI5SUhbJ18nWnRMTUwlIWtAUVpaUzVNMCwoZyJlVXM4LlZwTGs2NyxaTls8NUFnNkZAN0UraCVlRixvJ1k6WWYtbEQmMVJjJGc/OXJpKSdUQj9hMXI8OFApOmYsYTpgPCpCMUpwXytwZkpKWWlHcWRGRzVfQjVkNWckKHRkMik3dT5QJzhZQTBNUTw5OEtsRz8ickpyVDBhLiE4JCpAMD9lI1MwL1BGZkohUF4lQCJmSEwsTShiTi5zaylrcVRFXE1aaFRHQCwyO3BgdVYjRUxhN3FwXmxmQSxVJ2hxOjVkNWcoKHRkMik3dT5cK00zMGwtaCZdWyhYRiI2VVc3NDosaCZdWkM5PGRJW1dPMUdNSktbNSM6M1VDJk9VPlpLWCNLUk0kP3BAaChZblVpNi5LLkAzO1AtYnFnXCxGR2Q3ZkFJTGg/YG86OUldUGpbPVVwU1skRTQ3VFdZb0RlI21xU2YyZGdrcV4+aitoJ04qXUtdTmonKVY4Xl5LSytENFtKQiFVY0g/LWg2b1EzMld0PldmdCE/LUdDOlJVLkpUUidlaCc9VCchYjguOVAyPTxEKz43cD9LOD5TPWEobXI7NkU2W3JsMV49X1pkRF5NKUEqVSU2YTA6JidBMEE2M1guUGlTSDQ1LlhyJmRnYVluQSllcDBcbU1ZXSx0KV9hQj9VLCxGcCQuK29Jbi8uInBrKSRpYXVGKF9lTkgzTGluVCdeVVo7b2lvOj0zKm40NjZpa3MndGRBPGg8MiJAP2dwV01zYF0mLyM/QFUrX01PUnFlKm8vVmQlTk9XMUVoYkQhblhJJUJARThfYmAwPFYjPUllMGgiQkZOcywscWFzXWtPbD0/RUdKWV9xLUxlc2g7KitaZmUxOmgzMzopMi5KZ1pnbCclS2EnJ2lvRkJqLGslPF5UKkJJVSclUUNbXTpzX2VjWGhqNTZyKCslNl8/cD5ZZzYlLFs5aUxbXWApKk4uayk4ImMqRjlXLWwzY0VsVkFaUHFfPHI8TDhNNTRuaiFRaFJfXzRwQGsmcXJKMFg/Q3UrUWErXTlyMkZCXjQ1J04vL1IiajEhLycyQmBiKVMxIzokV21IUlQoI01zM29pJEpJYk90ZStnbW9fUkZSYD0nMEYxNU9RcG9jVG0rZ0l0cFxhQFpcQCovbl5HRmwvT1JpTFw5dDZSRDNpQT1YP14iPCI3VWViW25gWWVaYU4hUTFJQUNoZ2krUGlgPzBAYyFMOT9vLEk1YFEmQUZKSUlOQyI1SjRIKEw8XUs9aihvJWQ+QXJEUWVhZHFTQ3E8Y1BKLzc5X0UxdTFdXnUpM1tDcE88P2hoWUA7P0dnLVNALztTUTAwY1F0NldTVGRZRDRbLmAzWW0zUy4/OC1uPW5AJVkzSHUvPUkxdElJUW1MPEI5O1ttMU89cThiQkdiZERULUdHXjA7RT5rVVloY0wvS1ItNFdFZi0qLGZgbixUQy02P2heVHNpWEYqPWo4M2lZPW5fI0NzKi9oX28zW007ZmpxVk88MGZfYEE/NGEkb0AqK3UxSktCdUFScCxHMyVeaWVYNiclLT5Zazdwb3M7RGtcKDA2QmlgY0g6Vyc/V0dGUFRxLGZURlZzYilTX2NYX1suR1lMZF0hcTxkdEorSTdWKldgJFBZUFwldVhOTVA5J19IKEAhVl07Vk06QGhsdCthbE5IKWRyW0ArXiZUUD1JbFMmPClodDtjOWYranBWLCkjX08mTlAtaXAyQFw4XG9vQEB0YCgzLjdLRl0mKihjP2NEaldHJGkhQEBGJ3AlIjBDKmlURVInMENKUCxMIU9JNl8mYkNKIWhbSGImbjVsXUtJXzMuTTIjbjMvKkB0bU0kOXFmcWlodUhncjtcZEwyYmRSPGE/SVIvZ2Irci5ZNUsrRDIyYmgwMWdWJFpjMiRIOUNyUERlbE8wQVdjI0J1ckt1dSxRVVwzNyJqbEJbXihvb2h1aD1wbUVwPiojLTUkQGRCLkY7MjMkKUwmOmMmWFVMW2guZGQkUWNuUGxQUXQlIUo0QUpScEJHVXBiOGtbckE9TEwvSDtrL2ldJjVOblswN3RLOiRvcEA3bjBTLWJqX1hKbls2SWojaGkhLjI1RWs1Mjw2WkNHR0xTUUo5WHQ7a2MjRyRoSShEPkxxUComciYvWDQpTiFMLjFJamVUQy5IL21NNV42Y28xKElxI2dsckkoP2kjKlM1QSJiaTU4VDYkOiMtOFhDRzslb14uPmpnUS1FSE1HUDtcJChqVWpMVjArKW4sSVprbyo8Ul5oP1BiTiZNLUwlUWg3SDVQLmJTcGVcL0ttQ0omYz9lZUhwQW1zImwvbW9eclsnLGVCIz40SzcwanJTKTg/P2hoaDowLldoRXVqPC9SVyJqSERvcTxiNl81ST5zQWM7PVMkYWtHUSdbWW44anRMbkpadSkwIT8jNlVZOktsbTk6dSNfUzJqczg4V2dcbE1VJjhvL0BLSzBALnE7R15cYCNQOEA6OmtEKm5hYjI3UXFGbiNnaWVtRSc3VWxBJ0lpNFM3S2VNJ1wxWTclTUFTKXJwWi4mZ3BeYTZNb2E5UDxKJS5dYzxrTCNOSTVOKkFNWmNiQXE5XzhWaFBGKDRmdFtVN3JsKTdHY0s+JGFdWz5OYFI2VyFRNFgwXD5fODkhS01QS3RsMzpiRDF1MG0jNiZGR0cwW0dqMGVWa3BeTis3RUlEKTBQL2NBaFgjYU0laVxJW3BaWz5VSj8nOEEiJFtIVDxmPV5yTU0wTEwzaiFTZmVUMi1vLXBRNjBMJztwJy8pcV1wcG87PEM0bD5bO1srJSFmKk0hOTRHZ1xQTztkXkZBTzpmYVleUm5rOkRvR3NVYUkiSlhLbjs3MG9dPy1aT1Q6TmEtXShrNS4qbl8oISZjV2tubDIqUEJXSywtW3FdRFkkZUdYNUdYYWZxS2JbXStQSnIvZWRldV1PbTkwWkxjVjhobD9oZy9xK0RSa0AtaCRtS3NiNVJgXTFlZkBYL1VqcztfYkUnYDQtLEAuaEQ9TkVdb0xFNl5bZjJbKjFhdCRaMlNzPyJLU2Q9YE9bP1puLW4mXlF0dS9BOGM/JXBCRHFiTW4rVlU5X04oRC5EYHJuQnA+Pk0vU01Mc2tVUVUzPiJaQkpJUj1hRHIlRz9iTWYmIS4vTVNdZSIlJ2tqJSgxcEdFaGwmZDZxbCFyUz8rPGtpbTIhRC04MFkuZlNZbSotKSNENlpgIyd0U2ZKSFRGclU1ZTZvU2xFTDUhN0oqVGs9XmVwR1pWRUw+SDlDRHVESjpsRGhAMmBPLDZwVzhOKkFyblF0O0wqIj9NbklnVy86ZFU1TCZeJVRUZUdlSW9vcEwnNSpkZEVoXDs/OEFKYGBrTTR0Y2MuJmc3NUpUKUojTGh0ZmRWXzk7W2o1bGc8NF5cUz5nWWJTbCoyOVgmL2lwYFQhcGVQI01vW2Arb2clWUdfKSVmSlhuXEQ9OThPJVhlR0FzPyI1UEY7OVNHWEpRPlA5P34+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgMTAKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDYxIDAwMDAwIG4gCjAwMDAwMDAxMTIgMDAwMDAgbiAKMDAwMDAwMDIxOSAwMDAwMCBuIAowMDAwMDAwMzMxIDAwMDAwIG4gCjAwMDAwMDA0NDYgMDAwMDAgbiAKMDAwMDAwMDY0OSAwMDAwMCBuIAowMDAwMDAwNzE3IDAwMDAwIG4gCjAwMDAwMDA5NzggMDAwMDAgbiAKMDAwMDAwMTAzNyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzwxMzRiMWRhOTI3ZDhiYWNiOTRlNmFiMjg2MTMwYjMyYz48MTM0YjFkYTkyN2Q4YmFjYjk0ZTZhYjI4NjEzMGIzMmM+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDcgMCBSCi9Sb290IDYgMCBSCi9TaXplIDEwCj4+CnN0YXJ0eHJlZgo5MDQ0CiUlRU9GCg=="
+            download="YourName_Resume.pdf" class="btn btn-solid" download>Download CV <svg
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg></a>
+          <a href="#contact" class="btn">Hire Me <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+              height="1em">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SKILLS ─── -->
+  <section id="skills" class="skills-section">
+    <div class="fade-up">
+      <span class="section-label">What I work with</span>
+      <h2 class="section-title">My <span>Skills</span></h2>
+    </div>
+    <div class="skills-layout">
+      <div class="skill-categories fade-up">
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+                height="1em">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg></div>
+            <div class="skill-cat-title">Languages</div>
+          </div>
+          <!-- ✏️ EDIT: Add/remove skill tags -->
+          <div class="skill-tags">
+            <span class="skill-tag">C</span>
+            <span class="skill-tag">C++</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">HTML5</span>
+            <span class="skill-tag">CSS3</span>
+          </div>
+        </div>
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+                height="1em">
+                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                <polyline points="2 17 12 22 22 17" />
+                <polyline points="2 12 12 17 22 12" />
+              </svg></div>
+            <div class="skill-cat-title">Frameworks & Libraries</div>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">React.js</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">Bootstrap</span>
+            <span class="skill-tag">Node.js</span>
+          </div>
+        </div>
+        <div class="skill-category-card">
+          <div class="skill-cat-header">
+            <div class="skill-cat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+                height="1em">
+                <path
+                  d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+              </svg></div>
+            <div class="skill-cat-title">Tools & Platforms</div>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">GitHub</span>
+            <span class="skill-tag">VS Code</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Windows</span>
+          </div>
+        </div>
+      </div>
+      <div class="skill-bars fade-up">
+        <!-- ✏️ EDIT: Update skill names and percentages (data-progress & display %) -->
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">HTML / CSS</span><span
+              class="skill-bar-pct">90%</span></div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="90"></div>
+          </div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">JavaScript</span><span
+              class="skill-bar-pct">80%</span></div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="80"></div>
+          </div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">React.js</span><span class="skill-bar-pct">75%</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="75"></div>
+          </div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">Tailwind CSS</span><span
+              class="skill-bar-pct">85%</span></div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="85"></div>
+          </div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">Java</span><span class="skill-bar-pct">60%</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="60"></div>
+          </div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">C / C++</span><span class="skill-bar-pct">70%</span>
+          </div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="70"></div>
+          </div>
+        </div>
+        <div class="skill-bar-item">
+          <div class="skill-bar-info"><span class="skill-bar-name">Git & GitHub</span><span
+              class="skill-bar-pct">78%</span></div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" data-progress="78"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECTS ─── -->
+  <section id="projects" class="projects-section">
+    <div class="projects-header fade-up">
+      <div>
+        <span class="section-label">What I've built</span>
+        <h2 class="section-title">My <span>Projects</span></h2>
+      </div>
+      <div class="filter-strip">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="web">Web Apps</button>
+        <button class="filter-btn" data-filter="design">UI/UX</button>
+      </div>
+    </div>
+
+    <div class="projects-grid" id="projects-grid">
+
+      <!-- PROJECT CARD TEMPLATE — copy & duplicate this block for each project -->
+      <div class="project-card fade-up" data-category="web">
+        <div class="project-thumb">
+          <!--
+          ✏️ HOW TO ADD A PROJECT IMAGE:
+          Replace the placeholder div below with:
+            <img src="YOUR_PROJECT_IMAGE.jpg" alt="Project Name" />
+          Or use an online image URL.
+        -->
+          <div class="project-thumb-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+            <span>Project Screenshot</span>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-links">
+            <!-- ✏️ EDIT: Replace # with GitHub repo and live demo URLs -->
+            <a href="#" class="project-link-btn" title="GitHub" target="_blank"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                <path
+                  d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17A10.95 10.95 0 0 1 12 6.84c.97.004 1.95.13 2.86.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.7 5.38-5.26 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
+              </svg></a>
+            <a href="#" class="project-link-btn" title="Live Demo" target="_blank"><svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-category">Web App</span>
+            <span class="project-year">2025</span>
+          </div>
+          <!-- ✏️ EDIT: Project title and description -->
+          <h3 class="project-title">E-Commerce Platform</h3>
+          <p class="project-desc">A full-stack shopping application with product listings, cart management, and user
+            authentication built with React.</p>
+          <div class="project-stack">
+            <span class="stack-tag">React</span>
+            <span class="stack-tag">Node.js</span>
+            <span class="stack-tag">CSS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up" data-category="design">
+        <div class="project-thumb">
+          <div class="project-thumb-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+              <path
+                d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3z" />
+              <path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7" />
+            </svg>
+            <span>Project Screenshot</span>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-links">
+            <a href="#" class="project-link-btn" title="GitHub" target="_blank"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                <path
+                  d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17A10.95 10.95 0 0 1 12 6.84c.97.004 1.95.13 2.86.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.7 5.38-5.26 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
+              </svg></a>
+            <a href="#" class="project-link-btn" title="Live Demo" target="_blank"><svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-category">UI/UX</span>
+            <span class="project-year">2025</span>
+          </div>
+          <h3 class="project-title">Glassmorphism UI Kit</h3>
+          <p class="project-desc">Modern UI design system with reusable glassmorphic components, frosted panels, and a
+            refined emerald color palette.</p>
+          <div class="project-stack">
+            <span class="stack-tag">HTML</span>
+            <span class="stack-tag">CSS</span>
+            <span class="stack-tag">Figma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card fade-up" data-category="web">
+        <div class="project-thumb">
+          <div class="project-thumb-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+              <polyline points="16 7 22 7 22 13" />
+            </svg>
+            <span>Project Screenshot</span>
+          </div>
+          <div class="project-overlay"></div>
+          <div class="project-links">
+            <a href="#" class="project-link-btn" title="GitHub" target="_blank"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+                <path
+                  d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17A10.95 10.95 0 0 1 12 6.84c.97.004 1.95.13 2.86.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.7 5.38-5.26 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
+              </svg></a>
+            <a href="#" class="project-link-btn" title="Live Demo" target="_blank"><svg
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-category">Web App</span>
+            <span class="project-year">2024</span>
+          </div>
+          <h3 class="project-title">Interactive Dashboard</h3>
+          <p class="project-desc">Data visualization dashboard with real-time charts, filtering controls, and a fully
+            responsive grid layout.</p>
+          <div class="project-stack">
+            <span class="stack-tag">JavaScript</span>
+            <span class="stack-tag">Chart.js</span>
+            <span class="stack-tag">Tailwind</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ─── -->
+  <section id="contact" class="contact-section">
+    <div class="fade-up">
+      <span class="section-label">Let's talk</span>
+      <h2 class="section-title">Contact <span>Me</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info fade-up">
+        <!-- ✏️ EDIT: Update tagline -->
+        <p class="contact-tagline">I'm currently working on various projects, my main goal is to learn and grow as a developer.I am also focusing on my university results so that I can get a scholarship for Higher studies.</p>
+        <div class="contact-items">
+          <!-- ✏️ EDIT: Replace with your real email and phone -->
+          <div class="contact-item">
+            <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+                height="1em">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <polyline points="2,4 12,13 22,4" />
+              </svg></div>
+            <div class="contact-item-text">
+              <span class="contact-item-label">Email</span>
+              <span class="contact-item-value">your.email@gmail.com</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+                height="1em">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg></div>
+            <div class="contact-item-text">
+              <span class="contact-item-label">Phone</span>
+              <span class="contact-item-value">+880 XXXX XXXXXX</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="1em"
+                height="1em">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg></div>
+            <div class="contact-item-text">
+              <span class="contact-item-label">Location</span>
+              <span class="contact-item-value">Dhaka, Bangladesh</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-social">
+          <!-- ✏️ EDIT: Replace # with your profile URLs -->
+          <a href="#" class="social-btn" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="currentColor" width="1em" height="1em">
+              <path
+                d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17A10.95 10.95 0 0 1 12 6.84c.97.004 1.95.13 2.86.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.7 5.38-5.26 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
+            </svg> GitHub</a>
+          <a href="#" class="social-btn" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="currentColor" width="1em" height="1em">
+              <path
+                d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+            </svg> LinkedIn</a>
+          <a href="#" class="social-btn" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="currentColor" width="1em" height="1em">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg> Twitter</a>
+        </div>
+      </div>
+      <div class="contact-form-wrapper fade-up">
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-input" placeholder="John Doe" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" placeholder="john@email.com" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input type="tel" class="form-input" placeholder="+880 XXXX XXXXXX" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+              <input type="text" class="form-input" placeholder="Project inquiry" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" placeholder="Tell me about your project or opportunity…"
+              required></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid form-submit">Send Message <svg xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="1em" height="1em">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></button>
+          <p class="form-status" id="form-status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-logo">Dev<span>.</span></div>
+    <!-- ✏️ EDIT: Update your name -->
+    <p>© 2026 Minhajul Islam — All rights reserved.</p>
+    <div class="social-strip">
+      <a href="https://github.com/Minhajul43" target="_blank" title="GitHub"><svg xmlns="https://github.com/Minhajul43"
+          viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+          <path
+            d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2c-3.2.69-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.17A10.95 10.95 0 0 1 12 6.84c.97.004 1.95.13 2.86.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.7 5.38-5.26 5.67.41.36.78 1.06.78 2.13v3.16c0 .31.2.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
+        </svg></a>
+      <a href="https://www.linkedin.com/in/minhajulislam43/" target="_blank" title="LinkedIn"><svg
+          xmlns="https://www.linkedin.com/in/minhajulislam43/" viewBox="0 0 24 24" fill="currentColor" width="1em"
+          height="1em">
+          <path
+            d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+        </svg></a>
+      <a href="https://www.facebook.com/Minhajul.43" target="_blank" title="Facebook"><svg
+          xmlns="https://www.facebook.com/Minhajul.43" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em">
+          <path
+            d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+        </svg></a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=minhajul255685islam@gmail.com" target="_blank" title="Email"><svg
+          xmlns="mailto:minhajul255685islam@gmail.com" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+          <polyline points="2,4 12,13 22,4" />
+        </svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── BACK TO TOP ─── -->
+  <div id="back-top" title="Back to top"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em">
+      <line x1="12" y1="19" x2="12" y2="5" />
+      <polyline points="5 12 12 5 19 12" />
+    </svg></div>
+
+  <script>
+    /* ── Custom Cursor ── */
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+    (function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); })();
+    document.querySelectorAll('a,button,.filter-btn,.project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '54px'; ring.style.height = '54px'; ring.style.opacity = '0.8'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5'; });
+    });
+
+    /* ── Scroll Progress ── */
+    const prog = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      prog.style.width = pct + '%';
+    });
+
+    /* ── Navbar ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 80); });
+
+    /* ── Mobile Menu ── */
+    const toggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      const ic = toggle.querySelector('svg');
+      if (navLinks.classList.contains('active')) {
+        toggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+      } else {
+        toggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+      }
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+      toggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="1em" height="1em"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    }));
+
+    /* ── Scroll Spy ── */
+    const sections = document.querySelectorAll('section');
+    const navAnchors = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 160) cur = s.id; });
+      navAnchors.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+    });
+
+    /* ── Typing Effect ── */
+    const words = ["Web Developer", "CSE Student", "Problem Solver", "UI Enthusiast"];
+    let wi = 0, ci = 0, del = false;
+    const typEl = document.querySelector('.typing-text');
+    function type() {
+      const w = words[wi];
+      typEl.textContent = del ? w.slice(0, --ci) : w.slice(0, ++ci);
+      let spd = del ? 45 : 100;
+      if (!del && ci === w.length) { spd = 1600; del = true; }
+      else if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; spd = 400; }
+      setTimeout(type, spd);
+    }
+    setTimeout(type, 600);
+
+    /* ── Skill Bars Intersection Observer ── */
+    const fills = document.querySelectorAll('.skill-bar-fill');
+    const skillObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.style.width = e.target.dataset.progress + '%'; skillObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.4 });
+    fills.forEach(f => skillObs.observe(f));
+
+    /* ── Fade-up on Scroll ── */
+    const faders = document.querySelectorAll('.fade-up');
+    const fadeObs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => { if (e.isIntersecting) { e.target.style.transitionDelay = (i % 4) * 0.1 + 's'; e.target.classList.add('visible'); fadeObs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    faders.forEach(f => fadeObs.observe(f));
+
+    /* ── Project Filter ── */
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.project-card');
+    filterBtns.forEach(btn => btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c => {
+        const show = f === 'all' || c.dataset.category === f;
+        c.style.opacity = '0'; c.style.transform = 'translateY(20px)';
+        setTimeout(() => { c.style.display = show ? 'block' : 'none'; if (show) { requestAnimationFrame(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }); } }, 220);
+      });
+    }));
+    cards.forEach(c => { c.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; });
+
+    /* ── Contact Form ── */
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const status = document.getElementById('form-status');
+      status.textContent = 'Sending…';
+      setTimeout(() => { status.textContent = '✓ Message sent! I\'ll get back to you soon.'; this.reset(); setTimeout(() => status.textContent = '', 4000); }, 1200);
+    });
+
+    /* ── Back to Top ── */
+    const btt = document.getElementById('back-top');
+    window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 400));
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+</body>
+
+</html>
